@@ -1,0 +1,1210 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Mansha Chimnani</title>
+<style>
+/* ============================================================
+   DESIGN PLAN
+   Color: plain white ground, near black ink, a single restrained
+     red accent used only for emphasis and the one place color is
+     the subject itself (the UNO cards in the rules demo).
+   Type: Instrument Sans for display and body (clean, quiet,
+     professional), IBM Plex Mono for labels, counters and data.
+   Layout: a case study format. one page, one skill per section,
+     each section pairs a short claim with a working demo that
+     proves it, rather than a resume bullet.
+   ============================================================ */
+:root{
+  --bg:#FFFFFF; --ink:#141414; --muted:#666666; --line:#E6E6E6; --soft:#FAFAFA;
+  --accent:#C8102E; --accent-soft:#FBE9EC;
+  --red:#ED1C24; --yellow:#E0A800; --green:#157A3C; --blue:#0062AD;
+  --font-display:'Instrument Sans',system-ui,sans-serif;
+  --font-body:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121212; --ink:#F2F2F2; --muted:#A0A0A0; --line:#2B2B2B; --soft:#1A1A1A; --accent-soft:#3A1920;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121212; --ink:#F2F2F2; --muted:#A0A0A0; --line:#2B2B2B; --soft:#1A1A1A; --accent-soft:#3A1920;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+h1,h2,h3{font-family:var(--font-display); text-wrap:balance; margin:0;}
+p{margin:0; line-height:1.6;}
+img{max-width:100%;}
+[hidden]{display:none!important;}
+a{color:inherit;}
+button{font-family:inherit;}
+.wrap{max-width:980px; margin:0 auto;}
+.eyebrow{font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.12em; font-size:.68rem; color:var(--accent);}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+  background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line); padding-block:14px;
+}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:20; background:var(--bg);}
+nav .row{display:flex; align-items:center; justify-content:space-between; gap:16px; max-width:980px; margin-inline:auto; flex-wrap:wrap;}
+.brand{font-family:var(--font-display); font-weight:700; font-size:1.02rem;}
+nav .links{display:flex; gap:16px; font-size:.78rem; flex-wrap:wrap;}
+nav .links a{text-decoration:none; color:var(--muted);}
+nav .links a:hover{color:var(--ink);}
+@media (max-width:860px){ nav .links{display:none;} }
+
+/* ---------- HERO ---------- */
+.hero{padding-block:56px 36px; max-width:720px;}
+.hero h1{font-size:clamp(2rem,4.6vw,2.7rem); font-weight:700; line-height:1.12; margin-top:14px;}
+.hero p.dek{color:var(--muted); font-size:1.02rem; margin-top:16px; max-width:58ch;}
+.hero .meta{display:flex; gap:18px; flex-wrap:wrap; margin-top:20px; font-size:.82rem; color:var(--muted);}
+.hero .meta b{color:var(--ink);}
+
+/* ---------- SECTION ---------- */
+.section{padding-block:52px; border-top:1px solid var(--line);}
+.sec-head{max-width:62ch; margin-bottom:28px;}
+.sec-head h2{font-size:1.55rem; font-weight:700; margin-top:8px;}
+.sec-head p{color:var(--muted); margin-top:10px; font-size:.96rem;}
+
+/* ---------- SHARED DEMO FRAME ---------- */
+.demo{border:1px solid var(--line); border-radius:16px; background:var(--soft); padding:22px;}
+.demo-note{font-family:var(--font-mono); font-size:.68rem; color:var(--muted); margin-top:14px;}
+.toggles{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+.toggle{
+  font-family:var(--font-mono); font-size:.72rem; border:1px solid var(--line); background:var(--bg);
+  color:var(--muted); padding:7px 14px; border-radius:30px; cursor:pointer;
+}
+.toggle.active{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+.field{display:grid; gap:6px;}
+.field label{font-family:var(--font-mono); font-size:.68rem; color:var(--muted); display:flex; justify-content:space-between;}
+.field input[type=range]{width:100%;}
+.field input[type=number]{
+  font-family:var(--font-mono); font-size:.85rem; border:1px solid var(--line); border-radius:8px;
+  padding:7px 9px; width:100%; background:var(--bg); color:var(--ink);
+}
+.statgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px;}
+.stat{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:12px 14px;}
+.stat .sl{font-family:var(--font-mono); font-size:.64rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted);}
+.stat .sv{font-family:var(--font-mono); font-size:1.35rem; font-weight:600; font-variant-numeric:tabular-nums; margin-top:4px;}
+.stat .sv.good{color:var(--green);}
+.stat .sv.bad{color:var(--accent);}
+.btn{
+  font-family:var(--font-mono); font-size:.76rem; border:1px solid var(--ink); background:var(--ink);
+  color:var(--bg); padding:9px 16px; border-radius:30px; cursor:pointer;
+}
+.btn.ghost{background:transparent; color:var(--ink);}
+
+/* ---------- PACKAGING DEMO ---------- */
+.pack-cols{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+@media (max-width:700px){ .pack-cols{grid-template-columns:1fr;} }
+.pack-col{display:grid; gap:12px; min-width:0;}
+.boxviz{
+  height:140px; border:2px solid var(--ink); border-radius:8px; position:relative; background:var(--bg);
+  display:flex; align-items:flex-end; overflow:hidden;
+}
+.boxviz .stack{width:100%; background:repeating-linear-gradient(0deg, var(--line) 0 3px, transparent 3px 6px); border-top:2px dashed var(--muted);}
+.boxviz .label{position:absolute; top:6px; left:8px; font-family:var(--font-mono); font-size:.62rem; color:var(--muted);}
+
+/* ---------- PERSONAL ANECDOTE ---------- */
+.anecdote{
+  border-left:3px solid var(--accent); background:var(--soft); border-radius:0 12px 12px 0;
+  padding:16px 20px; margin-bottom:28px; max-width:70ch;
+}
+.anecdote .al{font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent); margin-bottom:8px;}
+.anecdote p{font-size:.92rem; color:var(--ink);}
+
+/* ---------- RULES TUTORIAL (guided teaching steps) ---------- */
+.tutor{border:1px solid var(--line); border-radius:16px; background:var(--bg); padding:22px; margin-bottom:28px;}
+.tutor-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+.tutor-head h3{font-size:1.05rem;}
+.tutor-dots{display:flex; gap:6px;}
+.tutor-dots span{width:8px; height:8px; border-radius:50%; background:var(--line);}
+.tutor-dots span.on{background:var(--accent);}
+.tutor-stage{min-height:160px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding-block:10px;}
+.tutor-caption{font-size:.92rem; max-width:52ch;}
+.tutor-row{display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; justify-content:center;}
+.tutor-row .card{width:56px; height:82px; font-size:1.05rem;}
+.tutor-row .card.glow{box-shadow:0 0 0 3px var(--accent), 0 3px 0 rgba(0,0,0,.14);}
+.tutor-row .card.dim{opacity:.4;}
+.tutor-tag{font-family:var(--font-mono); font-size:.66rem; color:var(--muted); margin-top:4px;}
+.tutor-foot{display:flex; justify-content:space-between; align-items:center; margin-top:16px; gap:10px;}
+
+/* ---------- CAD BLUEPRINT VIEWER ---------- */
+.cadcards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:24px;}
+.cadcard{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:16px;}
+.cadcard h4{font-size:.92rem; font-weight:700;}
+.cadcard ul{margin:8px 0 0; padding-left:18px; font-size:.84rem; color:var(--muted); display:grid; gap:5px;}
+.cadwrap{border:1px solid var(--line); border-radius:12px; background:#EEF4FA; padding:16px; overflow:hidden;}
+:root[data-theme="dark"] .cadwrap, @media (prefers-color-scheme:dark){ }
+.cadsvg{width:100%; height:auto; display:block;}
+.cadcaption{font-family:var(--font-mono); font-size:.72rem; color:var(--muted); margin-top:10px; text-align:center;}
+.cadlabels{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px; margin-top:14px;}
+.cadlabels .cl{font-size:.8rem; display:flex; gap:8px; align-items:flex-start;}
+.cadlabels .cl b{font-family:var(--font-mono); font-size:.68rem; color:var(--accent); flex:none;}
+
+/* ---------- ANALYTICS CHART ---------- */
+.barlist{display:grid; gap:10px;}
+.barrow{display:grid; grid-template-columns:110px 1fr 54px; gap:10px; align-items:center; font-size:.85rem;}
+.barbg{height:16px; background:var(--line); border-radius:4px; overflow:hidden;}
+.barfill{height:100%; border-radius:4px; transition:width .3s;}
+.barval{font-family:var(--font-mono); font-size:.76rem; text-align:right; color:var(--muted);}
+.insight{
+  margin-top:16px; border-left:3px solid var(--accent); padding-left:12px; font-size:.9rem; color:var(--ink);
+}
+
+/* ---------- CONTENT CALENDAR ---------- */
+.weekgrid{display:grid; gap:14px;}
+.weekrow{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:14px 16px;}
+.weekrow .wk{font-family:var(--font-mono); font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px;}
+.posts{display:flex; flex-wrap:wrap; gap:8px;}
+.post{
+  border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:.82rem; display:flex; gap:8px;
+  align-items:center; transition:opacity .2s;
+}
+.post .dot{width:8px; height:8px; border-radius:50%; flex:none;}
+
+/* ---------- TIMELINE ---------- */
+.timeline{display:grid; gap:2px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--bg);}
+.tl-row{display:grid; grid-template-columns:140px 1fr; border-top:1px solid var(--line);}
+.tl-row:first-child{border-top:none;}
+.tl-label{padding:10px 12px; font-size:.78rem; font-weight:600; background:var(--soft); display:flex; align-items:center;}
+.tl-track{display:grid; grid-template-columns:repeat(6,1fr); gap:2px; padding:6px; position:relative;}
+.tl-block{
+  border-radius:6px; padding:6px 8px; font-family:var(--font-mono); font-size:.64rem; color:#fff; cursor:pointer;
+  display:flex; align-items:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.tl-weeks{display:grid; grid-template-columns:140px 1fr; margin-bottom:2px;}
+.tl-weeks .wk-h{display:grid; grid-template-columns:repeat(6,1fr); gap:2px; padding:0 6px;}
+.tl-weeks .wk-h span{font-family:var(--font-mono); font-size:.62rem; text-align:center; color:var(--muted); padding:4px 0;}
+.tl-detail{margin-top:14px; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--bg); font-size:.86rem; min-height:46px;}
+
+/* ---------- GTM CANVAS ---------- */
+.gtmgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media (max-width:700px){ .gtmgrid{grid-template-columns:1fr;} }
+.gtmcell{border:1px solid var(--line); border-radius:12px; background:var(--bg); padding:14px 16px;}
+.gtmcell .gl{font-family:var(--font-mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin-bottom:6px;}
+.gtmcell p{font-size:.88rem;}
+
+/* ---------- RULES GAME (plain chrome, colored cards) ---------- */
+.playzone{border:1px solid var(--line); border-radius:16px; background:var(--soft); padding:20px; display:grid; gap:16px;}
+.pz-top{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;}
+.pz-msg{font-weight:700; font-size:1rem; flex:1; min-width:220px;}
+.pz-tip{font-family:var(--font-mono); font-size:.7rem; color:var(--muted); max-width:56ch;}
+.ai-row{display:flex; align-items:center; gap:10px; justify-content:center; min-height:30px;}
+.midrow{display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; padding-block:4px;}
+.pile-stack{position:relative; width:76px; height:106px;}
+.pile-label{font-family:var(--font-mono); font-size:.62rem; text-align:center; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.06em;}
+.card{
+  width:66px; height:96px; border-radius:10px; border:2px solid var(--ink); background:#fff;
+  display:flex; align-items:center; justify-content:center; position:relative; flex:none;
+  font-family:var(--font-display); font-weight:800; font-size:1.25rem; color:#fff;
+  box-shadow:0 3px 0 rgba(0,0,0,.14); transition:transform .15s;
+}
+.card.back{background:repeating-linear-gradient(135deg, var(--ink) 0 8px, #333 8px 16px);}
+.hand{display:flex; justify-content:center; flex-wrap:wrap; min-height:110px; align-items:flex-end;}
+.hand .card{margin-left:-14px; cursor:pointer;}
+.hand .card:first-child{margin-left:0;}
+.hand .card:hover{transform:translateY(-10px);}
+.hand .card.playable{box-shadow:0 0 0 3px var(--accent), 0 3px 0 rgba(0,0,0,.14); transform:translateY(-6px);}
+.hand .card.unplayable{opacity:.5; cursor:default;}
+.hand .card.unplayable:hover{transform:none;}
+.deckpile{cursor:pointer;}
+.deckpile:hover{transform:translateY(-4px);}
+.counter{
+  position:absolute; bottom:-8px; right:-8px; background:var(--ink); color:#fff; border-radius:50%;
+  width:24px; height:24px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-size:.64rem; border:2px solid var(--soft);
+}
+.pz-foot{display:flex; justify-content:center; gap:10px;}
+.colorpick{position:fixed; inset:0; background:rgba(20,20,20,.5); display:flex; align-items:center; justify-content:center; z-index:60;}
+.colorpick .box{background:var(--bg); border:1px solid var(--line); border-radius:16px; padding:24px; display:grid; gap:14px; text-align:center;}
+.colorswatches{display:flex; gap:12px; justify-content:center;}
+.swatch{width:50px; height:50px; border-radius:50%; border:3px solid var(--ink); cursor:pointer;}
+.swatch:hover{transform:scale(1.07);}
+.winbanner{text-align:center; font-weight:700; font-size:1.15rem; padding:14px; border:1px dashed var(--ink); border-radius:12px; background:var(--bg);}
+
+/* ---------- BACKGROUND / CREDENTIALS ---------- */
+.bggrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px;}
+.bgcard{border:1px solid var(--line); border-radius:12px; background:var(--soft); padding:16px;}
+.bgcard h3{font-size:.95rem;}
+.bgcard .org{color:var(--accent); font-weight:600; font-size:.84rem;}
+.bgcard p{font-size:.82rem; color:var(--muted); margin-top:6px;}
+
+/* ---------- FOOTER ---------- */
+footer{padding-block:48px 60px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:14px; align-items:flex-start;}
+footer h2{font-size:1.5rem;}
+.contact-row{display:flex; gap:14px; flex-wrap:wrap;}
+.copy-field{
+  font-family:var(--font-mono); font-size:.82rem; border:1px solid var(--line); border-radius:10px;
+  padding:9px 14px; background:var(--soft); display:flex; align-items:center; gap:10px;
+}
+.copy-field button{border:none; background:var(--accent); color:#fff; border-radius:6px; padding:4px 10px; font-family:var(--font-mono); font-size:.66rem; cursor:pointer;}
+footer .foot-note{font-size:.76rem; color:var(--muted); font-family:var(--font-mono);}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<nav>
+  <div class="row">
+    <div class="brand">Mansha Chimnani</div>
+    <div class="links">
+      <a href="#marketing">Product Marketing</a>
+      <a href="#engineering">Engineering</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#content">Content</a>
+      <a href="#ops">Operations</a>
+      <a href="#gtm">GTM</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section class="hero">
+    <span class="eyebrow">A visual portfolio for Mattel</span>
+    <h1>One skill, one working demo, instead of a resume page.</h1>
+    <p class="dek">I'm Mansha Chimnani, a Product Marketing and GTM Strategist at Pinnacle AI with a background in industrial engineering. Rather than list what I can do, each section below is a small, real demo built to show it: a playable rules experience, a packaging efficiency calculator, a decision dashboard, a launch calendar, a cross functional plan, and a go to market blueprint.</p>
+    <div class="meta">
+      <span><b>Based</b> in Chicago</span>
+      <span><b>M.S.</b> Marketing, Purdue</span>
+      <span><b>B.S.</b> Industrial Engineering, Purdue</span>
+    </div>
+  </section>
+
+  <section class="section" id="marketing">
+    <div class="sec-head">
+      <span class="eyebrow">Product Marketing</span>
+      <h2>Teaching the rules through play, not a manual.</h2>
+      <p>From a product marketing perspective, it is more useful for a customer to see a game in action than to read a page of instructions. A short ten second play helps someone register the rules far faster than text does, and it is the first impression most people will actually have time for. Below is a demo I built of what that could look like: a full, working round of UNO against the computer. Watch the glowing cards and the message line, they are doing the explaining.</p>
+    </div>
+
+    <div class="anecdote">
+      <div class="al">Where this idea came from</div>
+      <p>In almost every group I'm in, there's usually one person who reads through a new game and ends up teaching it to everyone else, and I have noticed that person is often me. That puts pressure on one person to learn the rules fast and explain them well, while everyone who would rather not read a rules card just sits there waiting, and that friction can stop a game before it starts. The clearest example was a group trying to learn Dos. The rules felt confusing enough on the page that we almost did not play at all. While I was reading through them out loud and explaining each one, it occurred to me that a short interactive walkthrough would have solved the whole problem before it ever came up. That is where the guided example below came from.</p>
+    </div>
+
+    <div class="tutor">
+      <div class="tutor-head">
+        <h3>An illustrative example: how a game teaches its own rules</h3>
+        <div class="tutor-dots" id="tut-dots"></div>
+      </div>
+      <div class="tutor-stage" id="tut-stage"></div>
+      <div class="tutor-foot">
+        <button class="btn ghost" id="tut-prev">Back</button>
+        <span class="tutor-tag" id="tut-step-label"></span>
+        <button class="btn" id="tut-next">Next</button>
+      </div>
+    </div>
+
+    <div class="playzone" id="playzone"></div>
+    <p class="demo-note" style="margin-top:14px;">That was the walkthrough. This is the real thing, play a full round below.</p>
+  </section>
+
+  <section class="section" id="engineering">
+    <div class="sec-head">
+      <span class="eyebrow">Industrial Engineering</span>
+      <h2>Packaging efficiency, worked out live.</h2>
+      <p>From a sustainability and packaging perspective, I think about efficiency and lower cost first, then about what happens after the box is opened. The last stage of a product's life cycle matters too: packaging that can be recycled easily, or reused as a storage container once the game is out of the box, is worth designing for from the start rather than bolting on later. A card box only needs to be as tall as the deck inside it, plus a small buffer. Adjust the box height below and watch the wasted space, the material used, and the shipping density change in real numbers, using a standard 108 card deck.</p>
+    </div>
+    <div class="demo">
+      <div class="pack-cols">
+        <div class="pack-col">
+          <div class="field">
+            <label><span>Box height (cm)</span><span id="pk-height-val">3.4</span></label>
+            <input type="range" id="pk-height" min="2.6" max="5.5" step="0.1" value="3.4">
+          </div>
+          <div class="field">
+            <label><span>Box length × width (cm)</span><span></span></label>
+            <input type="range" id="pk-footprint" min="70" max="95" step="1" value="82">
+          </div>
+          <div class="boxviz">
+            <span class="label" id="pk-viz-label">Box height 3.4 cm</span>
+            <div class="stack" id="pk-stack" style="height:60%"></div>
+          </div>
+          <button class="btn ghost" id="pk-snap">Snap to tightest fit</button>
+        </div>
+        <div class="pack-col">
+          <div class="statgrid">
+            <div class="stat"><div class="sl">Deck height needed</div><div class="sv" id="pk-needed">3.24 cm</div></div>
+            <div class="stat"><div class="sl">Wasted height</div><div class="sv bad" id="pk-waste">0.16 cm</div></div>
+            <div class="stat"><div class="sl">Wasted volume</div><div class="sv bad" id="pk-wastevol">5%</div></div>
+            <div class="stat"><div class="sl">Cardboard per box</div><div class="sv" id="pk-material">—</div></div>
+            <div class="stat"><div class="sl">Boxes per shipping case</div><div class="sv" id="pk-perbox">—</div></div>
+            <div class="stat"><div class="sl">Cardboard saved at tightest fit</div><div class="sv good" id="pk-saved">—</div></div>
+          </div>
+          <p class="demo-note" id="pk-note">A shipping case is modeled at 40 × 30 × 25 cm. All figures are computed from the dimensions above, not estimated.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:36px;">
+      <h3 style="font-size:1.15rem; margin-bottom:6px;">Redesign concepts: Hot Wheels packaging</h3>
+      <p style="color:var(--muted); font-size:.92rem; max-width:62ch; margin-bottom:20px;">The same engineering lens applied to a different Mattel line. Three directions, each solving a different problem with the current blister pack, followed by a set of CAD style concept drawings for each. The window box concept is drawn with its end of life in mind too, it is built to double as a small storage container once the car is out, which is the kind of thinking behind programs like <a href="https://www.businesswire.com/news/home/20210509005020/en/Mattel-Launches-New-Toy-Takeback-Program-Called-Mattel-PlayBack" target="_blank" rel="noopener">Mattel PlayBack</a>, Mattel's own toy take back and recycling program.</p>
+
+      <div class="cadcards">
+        <div class="cadcard">
+          <h4>Eco friendly materials</h4>
+          <ul>
+            <li>Replace single use plastic blisters with biodegradable or plant based plastic where a window is still needed.</li>
+            <li>Move to fully recyclable, plastic free cardboard boxes with a window or a protective sleeve instead of a bubble.</li>
+          </ul>
+        </div>
+        <div class="cadcard">
+          <h4>Collector focused durability</h4>
+          <ul>
+            <li>Use heavier, rigid cardstock so the backing card does not bend, crease, or warp in shipping or on a shelf.</li>
+            <li>Strengthen the seal between the plastic bubble and the card so it does not detach on its own.</li>
+          </ul>
+        </div>
+        <div class="cadcard">
+          <h4>Reusability and display</h4>
+          <ul>
+            <li>A tuck flap or sliding tray lets a collector open, store, and put the car back without destroying the card art.</li>
+            <li>A built in stand or foldable easel back lets an unopened card stand upright on a shelf.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="demo">
+        <div class="toggles" id="cad-toggles"></div>
+        <div class="cadwrap"><svg id="cad-svg" class="cadsvg" viewBox="0 0 440 280" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <div class="cadcaption" id="cad-caption">Current blister pack, shown for reference</div>
+        <div class="cadlabels" id="cad-labels"></div>
+        <p class="demo-note">Concept drawings, not manufacturing ready CAD files. Informed by Mattel's own published packaging goals: <a href="https://corporate.mattel.com/sustainable-product-and-packaging" target="_blank" rel="noopener">corporate.mattel.com/sustainable-product-and-packaging</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="analytics">
+    <div class="sec-head">
+      <span class="eyebrow">Marketing Analytics</span>
+      <h2>Turning a chart into a decision.</h2>
+      <p>From an analytics perspective, I dug into product performance by category to understand social engagement and search interest for each one, since the two often point in different directions and the gap between them is usually where the opportunity is. In practice I would pull engagement from a social listening tool and search interest from <a href="https://trends.google.com" target="_blank" rel="noopener">Google Trends</a>; the numbers below are illustrative placeholders built to show the analysis, not Mattel's actual data. Toggle the metric below and the recommendation line updates with it.</p>
+    </div>
+    <div class="demo">
+      <div class="toggles" id="an-toggles"></div>
+      <div class="barlist" id="an-bars"></div>
+      <div class="insight" id="an-insight"></div>
+      <p class="demo-note">Illustrative example data, built to demonstrate the analysis, not an actual Mattel report.</p>
+    </div>
+  </section>
+
+  <section class="section" id="content">
+    <div class="sec-head">
+      <span class="eyebrow">Social and Content Strategy</span>
+      <h2>A launch month, planned by channel.</h2>
+      <p>A sample four week content plan for a hypothetical UNO launch. Filter by channel to see how the mix shifts from awareness to purchase over the month.</p>
+    </div>
+    <div class="demo">
+      <div class="toggles" id="cal-toggles"></div>
+      <div class="weekgrid" id="cal-weeks"></div>
+      <p class="demo-note">Illustrative example plan, built to demonstrate the planning approach.</p>
+    </div>
+  </section>
+
+  <section class="section" id="ops">
+    <div class="sec-head">
+      <span class="eyebrow">Team Leadership and Operations</span>
+      <h2>Running a launch across four teams.</h2>
+      <p>A simplified six week plan across product, design and engineering, marketing, and retail. Click any block to see what that milestone actually involves and who owns it.</p>
+    </div>
+    <div class="demo">
+      <div id="tl-wrap"></div>
+      <div class="tl-detail" id="tl-detail">Click a milestone above to see the detail here.</div>
+      <p class="demo-note">Illustrative example plan, built to demonstrate how I would structure a launch.</p>
+    </div>
+  </section>
+
+  <section class="section" id="gtm">
+    <div class="sec-head">
+      <span class="eyebrow">Go to Market and Positioning</span>
+      <h2>The one page plan before the pitch deck.</h2>
+      <p>This is where I wanted to show how all of it comes together: the audience insight, the rules experience, the packaging trade offs, and the data above, translated into one actual plan rather than left as separate observations. Switch between two example products to see how the positioning changes with the audience, even when the underlying GTM framework stays the same.</p>
+    </div>
+    <div class="demo">
+      <div class="toggles" id="gtm-toggles"></div>
+      <div class="gtmgrid" id="gtm-grid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="background">
+    <div class="sec-head">
+      <span class="eyebrow">Background</span>
+      <h2>Where the above comes from.</h2>
+    </div>
+    <div class="bggrid">
+      <div class="bgcard"><h3>M.S., Marketing</h3><p class="org">Purdue University</p><p>Concentration in management marketing and analytics.</p></div>
+      <div class="bgcard"><h3>B.S., Industrial Engineering</h3><p class="org">Purdue University</p><p>The systems and process thinking behind the packaging demo above.</p></div>
+      <div class="bgcard"><h3>Product Marketing and GTM Strategist</h3><p class="org">Pinnacle AI</p><p>Leads a team of five across social, product marketing, and market research. Spearheaded two of Pinnacle's flagship AI products end to end.</p></div>
+      <div class="bgcard"><h3>Founder, CASO</h3><p class="org">Purdue University</p><p>Managed a 50 person board, funding, interviews, delegation, and conflict management, for events drawing 2,000+ visitors.</p></div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <span class="eyebrow">Get in touch</span>
+    <h2>Happy to walk through any of this live.</h2>
+    <p style="color:var(--muted); max-width:52ch;">Open to product marketing, GTM strategy, and consulting conversations, based in Chicago, happy to talk remote or in person.</p>
+    <div class="contact-row">
+      <div class="copy-field">
+        <span id="email-text">chimnanimansha@gmail.com</span>
+        <button onclick="copyField('email-text', this)">Copy</button>
+      </div>
+    </div>
+    <span class="foot-note">© 2026 Mansha Chimnani. Built as a personal demo, not officially affiliated with Mattel, Inc.</span>
+  </footer>
+
+</div>
+
+<script>
+function copyField(id, btn){
+  var text = document.getElementById(id).textContent;
+  var original = btn.textContent;
+  function done(ok){ btn.textContent = ok ? 'Copied' : 'Select text'; setTimeout(function(){ btn.textContent = original; }, 1400); }
+  try{ navigator.clipboard.writeText(text).then(function(){done(true);}).catch(function(){done(false);}); }catch(e){ done(false); }
+}
+
+/* ============================================================
+   0. RULES TUTORIAL — guided, illustrative teaching example
+   (fixed scenario, separate from the live game below)
+   ============================================================ */
+(function(){
+  var COLORHEX = { red:'#ED1C24', yellow:'#E0A800', green:'#157A3C', blue:'#0062AD' };
+  function mini(card, cls){
+    var el = document.createElement('div');
+    el.className = 'card' + (cls ? ' '+cls : '');
+    if(card.back){ el.classList.add('back'); return el; }
+    el.style.background = (card.color==='wild') ? 'linear-gradient(135deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--green) 50% 75%, var(--blue) 75% 100%)' : COLORHEX[card.color];
+    el.textContent = card.label;
+    return el;
+  }
+  function row(items){ var r = document.createElement('div'); r.className='tutor-row'; items.forEach(function(i){ r.appendChild(i); }); return r; }
+  function cap(text){ var p = document.createElement('p'); p.className='tutor-caption'; p.textContent = text; return p; }
+  function tag(text){ var p = document.createElement('p'); p.className='tutor-tag'; p.textContent = text; return p; }
+
+  var STEPS = [
+    function(stage){
+      stage.appendChild(cap('Each player is dealt seven cards to start.'));
+      stage.appendChild(row([{back:true},{back:true},{back:true},{back:true},{back:true},{back:true},{back:true}].map(function(c){ return mini(c); })));
+      stage.appendChild(tag('You, seven cards'));
+      stage.appendChild(row([{back:true},{back:true},{back:true},{back:true},{back:true},{back:true},{back:true}].map(function(c){ return mini(c); })));
+      stage.appendChild(tag('Computer, seven cards'));
+    },
+    function(stage){
+      stage.appendChild(cap('The top card of the deck flips over to start the discard pile.'));
+      stage.appendChild(row([mini({color:'red',label:'5'})]));
+      stage.appendChild(tag('Discard pile, red 5 in play'));
+    },
+    function(stage){
+      stage.appendChild(cap('To play a card, match the color or the number of the top card. The top card is red 5.'));
+      var r = row([ mini({color:'red',label:'7'},'glow'), mini({color:'blue',label:'5'},'glow'), mini({color:'green',label:'2'},'dim') ]);
+      stage.appendChild(r);
+      var labels = document.createElement('div'); labels.style.display='flex'; labels.style.gap='10px'; labels.style.justifyContent='center';
+      ['Matches color','Matches number','No match, cannot play'].forEach(function(t){ var s=document.createElement('span'); s.className='tutor-tag'; s.style.width='56px'; s.textContent=t; labels.appendChild(s); });
+      stage.appendChild(labels);
+    },
+    function(stage){
+      stage.appendChild(cap('Four cards change the normal turn instead of just matching.'));
+      stage.appendChild(row([
+        mini({color:'red',label:'SKIP'}), mini({color:'blue',label:'REV'}), mini({color:'green',label:'+2'}), mini({color:'wild',label:'WILD'})
+      ]));
+      var labels = document.createElement('div'); labels.style.display='flex'; labels.style.gap='10px'; labels.style.justifyContent='center'; labels.style.flexWrap='wrap';
+      ['Skips the other player','Also skips, with two players','Opponent draws two, loses turn','Lets you choose the color'].forEach(function(t){ var s=document.createElement('span'); s.className='tutor-tag'; s.style.width='70px'; s.textContent=t; labels.appendChild(s); });
+      stage.appendChild(labels);
+    },
+    function(stage){
+      stage.appendChild(cap('A Wild can be played on any color. Choosing a color sets what the next card has to match.'));
+      stage.appendChild(row([mini({color:'wild',label:'WILD'})]));
+      var sw = document.createElement('div'); sw.style.display='flex'; sw.style.gap='8px';
+      ['red','yellow','green','blue'].forEach(function(c){ var d=document.createElement('div'); d.style.width='28px'; d.style.height='28px'; d.style.borderRadius='50%'; d.style.border='2px solid var(--ink)'; d.style.background=COLORHEX[c]; sw.appendChild(d); });
+      stage.appendChild(sw);
+      stage.appendChild(tag('Choose one, play continues in that color'));
+    },
+    function(stage){
+      stage.appendChild(cap('Play your last card first, and you win the round.'));
+      stage.appendChild(row([mini({color:'green',label:'9'},'glow')]));
+      stage.appendChild(tag('Last card down, hand empty, round over'));
+    }
+  ];
+
+  var idx = 0;
+  var stageEl = document.getElementById('tut-stage');
+  var dotsEl = document.getElementById('tut-dots');
+  var labelEl = document.getElementById('tut-step-label');
+  var prevBtn = document.getElementById('tut-prev');
+  var nextBtn = document.getElementById('tut-next');
+
+  function render(){
+    stageEl.innerHTML = '';
+    STEPS[idx](stageEl);
+    labelEl.textContent = 'Step ' + (idx+1) + ' of ' + STEPS.length;
+    dotsEl.innerHTML = '';
+    STEPS.forEach(function(_, i){ var d = document.createElement('span'); if(i===idx) d.className='on'; dotsEl.appendChild(d); });
+    prevBtn.disabled = idx===0;
+    nextBtn.textContent = idx===STEPS.length-1 ? 'Restart' : 'Next';
+  }
+  prevBtn.addEventListener('click', function(){ if(idx>0){ idx--; render(); } });
+  nextBtn.addEventListener('click', function(){ if(idx<STEPS.length-1){ idx++; } else { idx=0; } render(); });
+  render();
+})();
+
+/* ============================================================
+   1. PRODUCT MARKETING — UNO rules demo (full game engine)
+   ============================================================ */
+(function(){
+  var COLORS = ['red','yellow','green','blue'];
+  var COLORHEX = { red:'#ED1C24', yellow:'#E0A800', green:'#157A3C', blue:'#0062AD' };
+  var zone = document.getElementById('playzone');
+  var S = null;
+
+  function freshDeck(){
+    var d = [];
+    COLORS.forEach(function(c){
+      d.push({color:c, type:'number', value:0});
+      for(var n=1;n<=9;n++){ d.push({color:c,type:'number',value:n}); d.push({color:c,type:'number',value:n}); }
+      ['skip','reverse','draw2'].forEach(function(t){ d.push({color:c,type:t}); d.push({color:c,type:t}); });
+    });
+    for(var i=0;i<4;i++){ d.push({color:'wild', type:'wild'}); }
+    for(var i=0;i<4;i++){ d.push({color:'wild', type:'wild4'}); }
+    return d;
+  }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function cardLabel(c){
+    if(c.type==='number') return String(c.value);
+    if(c.type==='skip') return 'SKIP';
+    if(c.type==='reverse') return 'REV';
+    if(c.type==='draw2') return '+2';
+    if(c.type==='wild') return 'WILD';
+    if(c.type==='wild4') return '+4';
+    return '?';
+  }
+  function colorName(c){ return c.charAt(0).toUpperCase()+c.slice(1); }
+
+  function newGame(){
+    var deck = shuffle(freshDeck());
+    var player = [], ai = [];
+    for(var i=0;i<7;i++){ player.push(deck.pop()); ai.push(deck.pop()); }
+    var discard = [];
+    var top = deck.pop();
+    while(top.type==='wild'||top.type==='wild4'){ discard.push(top); deck.unshift(top); shuffle(deck); top = deck.pop(); }
+    discard.push(top);
+    S = { deck:deck, discard:discard, player:player, ai:ai, currentColor: top.color,
+      turn:'player', phase:'dealing', pendingWild:null,
+      message:'Dealing the cards', tip:'Seven cards each, then the top card flips to start the pile.',
+      winner:null, drewThisTurn:false };
+    render();
+    setTimeout(function(){
+      S.phase='play';
+      S.message = 'Your turn. Glowing cards can be played.';
+      S.tip = 'Match the color or the number of the top card, or play a Wild any time.';
+      render();
+    }, 650);
+  }
+  function topCard(){ return S.discard[S.discard.length-1]; }
+  function canPlay(card){
+    if(card.type==='wild'||card.type==='wild4') return true;
+    if(card.color===S.currentColor) return true;
+    var t = topCard();
+    if(card.type==='number' && t.type==='number' && card.value===t.value) return true;
+    return false;
+  }
+  function reshuffleIfNeeded(){
+    if(S.deck.length===0){
+      var t = S.discard.pop();
+      S.deck = shuffle(S.discard);
+      S.discard = [t];
+    }
+  }
+  function drawCards(hand, n){
+    var out=[];
+    for(var i=0;i<n;i++){ reshuffleIfNeeded(); if(S.deck.length){ var c=S.deck.pop(); hand.push(c); out.push(c); } }
+    return out;
+  }
+  function checkWin(){
+    if(S.player.length===0){ S.winner='player'; S.phase='over'; S.message='You win the round.'; S.tip='Every card placed, every rule understood without a manual.'; return true; }
+    if(S.ai.length===0){ S.winner='ai'; S.phase='over'; S.message='The computer wins this round.'; S.tip='Select Deal Again to play another round.'; return true; }
+    return false;
+  }
+  function finishPlay(card, chosenColor){
+    S.discard.push(card);
+    S.currentColor = (card.color==='wild') ? chosenColor : card.color;
+    var skipOpponent = false;
+    if(card.type==='skip'||card.type==='reverse'){
+      S.message = (S.turn==='player' ? "Skip. The computer's turn is skipped." : 'Skip. Your turn is skipped.');
+      skipOpponent = true;
+    } else if(card.type==='draw2'){
+      var who = (S.turn==='player') ? S.ai : S.player;
+      drawCards(who, 2);
+      S.message = (S.turn==='player' ? 'Draw two. The computer draws two cards and loses its turn.' : 'Draw two. You draw two cards and lose your turn.');
+      skipOpponent = true;
+    } else if(card.type==='wild4'){
+      var who2 = (S.turn==='player') ? S.ai : S.player;
+      drawCards(who2, 4);
+      S.message = (S.turn==='player' ? 'Wild draw four. The computer draws four cards and loses its turn.' : 'Wild draw four. You draw four cards and lose your turn.');
+      skipOpponent = true;
+    } else if(card.type==='wild'){
+      S.message = 'Wild card. Color changed to ' + chosenColor + '.';
+    } else {
+      S.message = (S.turn==='player') ? 'You played ' + colorName(card.color) + ' ' + cardLabel(card) + '.' : 'The computer played ' + colorName(card.color) + ' ' + cardLabel(card) + '.';
+    }
+    S.drewThisTurn = false;
+    if(checkWin()){ render(); return; }
+    if(!skipOpponent){ S.turn = (S.turn==='player') ? 'ai' : 'player'; }
+    S.tip = (S.turn==='player') ? 'Your turn. Glowing cards can be played.' : 'Computer is thinking.';
+    render();
+    if(S.turn==='ai'){ setTimeout(aiTurn, 850); }
+  }
+  function playFromHand(hand, idx, isPlayer){
+    var card = hand[idx];
+    if(card.type==='wild'||card.type==='wild4'){
+      if(isPlayer){ S.pendingWild = idx; render(); }
+      else {
+        var counts = {red:0,yellow:0,green:0,blue:0};
+        hand.forEach(function(c,i){ if(i!==idx && c.color!=='wild') counts[c.color]++; });
+        var best = COLORS.reduce(function(a,b){ return counts[b]>counts[a]?b:a; }, 'red');
+        hand.splice(idx,1);
+        finishPlay(card, best);
+      }
+      return;
+    }
+    hand.splice(idx,1);
+    finishPlay(card, null);
+  }
+  function pickWildColor(color){
+    var idx = S.pendingWild;
+    var card = S.player[idx];
+    S.player.splice(idx,1);
+    S.pendingWild = null;
+    finishPlay(card, color);
+  }
+  function playerClickCard(idx){
+    if(S.phase!=='play' || S.turn!=='player') return;
+    var card = S.player[idx];
+    if(!canPlay(card)) return;
+    playFromHand(S.player, idx, true);
+  }
+  function playerDraw(){
+    if(S.phase!=='play' || S.turn!=='player' || S.drewThisTurn) return;
+    var drawn = drawCards(S.player, 1)[0];
+    if(!drawn){ render(); return; }
+    S.drewThisTurn = true;
+    if(canPlay(drawn)){
+      S.message = 'You drew ' + colorName(drawn.color==='wild'?S.currentColor:drawn.color) + ' ' + cardLabel(drawn) + '. It fits, play it or keep it.';
+      S.tip = 'This card is glowing because it matches. You can also hold it for later.';
+      render();
+    } else {
+      S.message = 'You drew a card that does not match. Turn passes to the computer.';
+      render();
+      setTimeout(function(){ S.turn='ai'; S.tip='Computer is thinking.'; render(); setTimeout(aiTurn, 700); }, 900);
+    }
+  }
+  function aiTurn(){
+    if(S.phase!=='play') return;
+    var hand = S.ai;
+    var options = [];
+    hand.forEach(function(c,i){ if(canPlay(c)) options.push(i); });
+    options.sort(function(a,b){
+      var ca=hand[a], cb=hand[b];
+      var wa = (ca.type==='wild'||ca.type==='wild4') ? 1:0;
+      var wb = (cb.type==='wild'||cb.type==='wild4') ? 1:0;
+      return wa-wb;
+    });
+    if(options.length){ playFromHand(hand, options[0], false); }
+    else {
+      var drawn = drawCards(hand,1)[0];
+      if(drawn && canPlay(drawn)){ playFromHand(hand, hand.length-1, false); }
+      else {
+        S.message = 'Computer drew a card and could not play. Your turn.';
+        S.turn='player'; S.drewThisTurn=false;
+        S.tip = 'Your turn. Glowing cards can be played.';
+        render();
+      }
+    }
+  }
+  function cardEl(card, opts){
+    opts = opts || {};
+    var el = document.createElement('div');
+    el.className = 'card' + (opts.extraClass ? ' '+opts.extraClass : '');
+    if(opts.back){ el.classList.add('back'); return el; }
+    el.style.background = (card.color==='wild') ? 'linear-gradient(135deg, var(--red) 0 25%, var(--yellow) 25% 50%, var(--green) 50% 75%, var(--blue) 75% 100%)' : COLORHEX[card.color];
+    el.textContent = cardLabel(card);
+    if(opts.onClick) el.addEventListener('click', opts.onClick);
+    return el;
+  }
+  function render(){
+    zone.innerHTML = '';
+    if(!S) return;
+    var top = document.createElement('div'); top.className='pz-top';
+    var msg = document.createElement('div'); msg.className='pz-msg'; msg.textContent = S.message;
+    var tip = document.createElement('div'); tip.className='pz-tip'; tip.textContent = S.tip;
+    top.appendChild(msg); top.appendChild(tip);
+    zone.appendChild(top);
+
+    var aiRow = document.createElement('div'); aiRow.className='ai-row';
+    var aiLabel = document.createElement('div'); aiLabel.className='pile-label'; aiLabel.textContent = 'Computer: ' + S.ai.length + ' cards';
+    aiRow.appendChild(aiLabel);
+    zone.appendChild(aiRow);
+
+    var mid = document.createElement('div'); mid.className='midrow';
+    var drawWrap = document.createElement('div');
+    var drawStack = document.createElement('div'); drawStack.className='pile-stack deckpile';
+    var drawCard = cardEl(null,{back:true}); drawCard.style.position='absolute'; drawCard.style.inset='0'; drawCard.style.width='100%'; drawCard.style.height='100%';
+    drawStack.appendChild(drawCard);
+    var cnt = document.createElement('div'); cnt.className='counter'; cnt.textContent = S.deck.length;
+    drawStack.appendChild(cnt);
+    drawStack.addEventListener('click', playerDraw);
+    drawWrap.appendChild(drawStack);
+    var drawLbl = document.createElement('div'); drawLbl.className='pile-label'; drawLbl.textContent='Draw pile';
+    drawWrap.appendChild(drawLbl);
+    mid.appendChild(drawWrap);
+
+    var discWrap = document.createElement('div');
+    var discStack = document.createElement('div'); discStack.className='pile-stack';
+    var tc = topCard();
+    var dc = cardEl(tc, {});
+    dc.style.position='absolute'; dc.style.inset='0'; dc.style.width='100%'; dc.style.height='100%';
+    discStack.appendChild(dc);
+    discWrap.appendChild(discStack);
+    var discLbl = document.createElement('div'); discLbl.className='pile-label';
+    discLbl.textContent = 'Discard pile, color in play: ' + colorName(S.currentColor);
+    discWrap.appendChild(discLbl);
+    mid.appendChild(discWrap);
+    zone.appendChild(mid);
+
+    if(S.phase==='over'){ var wb = document.createElement('div'); wb.className='winbanner'; wb.textContent = S.message; zone.appendChild(wb); }
+
+    var handLbl = document.createElement('div'); handLbl.className='pile-label'; handLbl.style.marginTop='4px'; handLbl.textContent = 'Your hand';
+    zone.appendChild(handLbl);
+    var hand = document.createElement('div'); hand.className='hand';
+    S.player.forEach(function(card, idx){
+      var playable = S.phase==='play' && S.turn==='player' && canPlay(card);
+      var el = cardEl(card, { onClick: function(){ playerClickCard(idx); } });
+      el.classList.add(playable ? 'playable' : 'unplayable');
+      hand.appendChild(el);
+    });
+    zone.appendChild(hand);
+
+    var foot = document.createElement('div'); foot.className='pz-foot';
+    var again = document.createElement('button'); again.className='btn ghost'; again.textContent = (S.phase==='over') ? 'Deal again' : 'Restart round';
+    again.addEventListener('click', newGame);
+    foot.appendChild(again);
+    zone.appendChild(foot);
+
+    if(S.pendingWild!==null){
+      var overlay = document.createElement('div'); overlay.className='colorpick';
+      var box = document.createElement('div'); box.className='box';
+      var h3 = document.createElement('h3'); h3.textContent='Choose a color'; h3.style.fontSize='1.1rem';
+      box.appendChild(h3);
+      var sw = document.createElement('div'); sw.className='colorswatches';
+      COLORS.forEach(function(c){
+        var s = document.createElement('div'); s.className='swatch'; s.style.background=COLORHEX[c];
+        s.addEventListener('click', function(col){ return function(){ pickWildColor(col); }; }(c));
+        sw.appendChild(s);
+      });
+      box.appendChild(sw);
+      overlay.appendChild(box);
+      zone.appendChild(overlay);
+    }
+  }
+  newGame();
+})();
+
+/* ============================================================
+   2. INDUSTRIAL ENGINEERING — packaging efficiency calculator
+   ============================================================ */
+(function(){
+  var CARD_COUNT = 108, CARD_THICKNESS_MM = 0.30, BUFFER_CM = 0.2;
+  var CASE = { l:40, w:30, h:25 };
+  var heightEl = document.getElementById('pk-height');
+  var heightVal = document.getElementById('pk-height-val');
+  var footprintEl = document.getElementById('pk-footprint');
+  var neededEl = document.getElementById('pk-needed');
+  var wasteEl = document.getElementById('pk-waste');
+  var wastevolEl = document.getElementById('pk-wastevol');
+  var materialEl = document.getElementById('pk-material');
+  var perboxEl = document.getElementById('pk-perbox');
+  var savedEl = document.getElementById('pk-saved');
+  var vizLabel = document.getElementById('pk-viz-label');
+  var stackEl = document.getElementById('pk-stack');
+  var snapBtn = document.getElementById('pk-snap');
+
+  var needed = (CARD_COUNT * CARD_THICKNESS_MM) / 10 + BUFFER_CM; // cm
+
+  function footprintSide(){
+    var sq = Number(footprintEl.value);
+    return { l: sq, w: Math.max(50, sq - 22) };
+  }
+  function boxesPerCase(l, w, h){
+    return Math.floor(CASE.l / (l/10)) * Math.floor(CASE.w / (w/10)) * Math.floor(CASE.h / h);
+  }
+  function compute(){
+    var h = Number(heightEl.value);
+    var fp = footprintSide();
+    var l = fp.l, w = fp.w; // mm
+    heightVal.textContent = h.toFixed(1);
+    vizLabel.textContent = 'Box height ' + h.toFixed(1) + ' cm';
+    var fillPct = Math.min(100, (needed / h) * 100);
+    stackEl.style.height = fillPct.toFixed(0) + '%';
+
+    var waste = Math.max(0, h - needed);
+    var wastePct = (waste / h) * 100;
+    neededEl.textContent = needed.toFixed(2) + ' cm';
+    wasteEl.textContent = waste.toFixed(2) + ' cm';
+    wastevolEl.textContent = wastePct.toFixed(0) + '%';
+
+    var lcm = l/10, wcm = w/10;
+    var surface = 2*(lcm*wcm + lcm*h + wcm*h); // cm2
+    materialEl.textContent = surface.toFixed(0) + ' cm²';
+
+    var perBox = boxesPerCase(l, w, h);
+    perboxEl.textContent = perBox + ' boxes';
+
+    var tightH = needed + 0.001;
+    var tightSurface = 2*(lcm*wcm + lcm*tightH + wcm*tightH);
+    var savedPerBox = surface - tightSurface;
+    var savedPct = surface > 0 ? (savedPerBox/surface)*100 : 0;
+    savedEl.textContent = h <= needed + 0.05 ? 'At tightest fit' : savedPct.toFixed(0) + '% less per box';
+  }
+  heightEl.addEventListener('input', compute);
+  footprintEl.addEventListener('input', compute);
+  snapBtn.addEventListener('click', function(){ heightEl.value = (needed + 0.05).toFixed(1); compute(); });
+  compute();
+})();
+
+/* ============================================================
+   2b. CAD CONCEPT VIEWER — Hot Wheels packaging redesigns
+   ============================================================ */
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs){ e.setAttribute(k, attrs[k]); }
+    return e;
+  }
+  function dimLine(svg, x1,y1,x2,y2,text,mid){
+    svg.appendChild(el('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:'#18324A','stroke-width':1,'marker-start':'url(#arrowS)','marker-end':'url(#arrowE)'}));
+    var t = el('text',{x:mid?mid[0]:(x1+x2)/2, y:mid?mid[1]:(y1+y2)/2 - 6, 'font-family':'IBM Plex Mono', 'font-size':'9', fill:'#18324A', 'text-anchor':'middle'});
+    t.textContent = text;
+    svg.appendChild(t);
+  }
+  function defs(svg){
+    var d = el('defs',{});
+    ['arrowS','arrowE'].forEach(function(id){
+      var m = el('marker',{id:id, markerWidth:'8', markerHeight:'8', refX:'4', refY:'4', orient:'auto'});
+      var p = el('path',{d:'M0,0 L8,4 L0,8 Z', fill:'#18324A'});
+      m.appendChild(p); d.appendChild(m);
+    });
+    var hatch = el('pattern',{id:'hatch', width:6, height:6, patternTransform:'rotate(45)', patternUnits:'userSpaceOnUse'});
+    hatch.appendChild(el('line',{x1:0,y1:0,x2:0,y2:6, stroke:'#18324A','stroke-width':1}));
+    d.appendChild(hatch);
+    svg.appendChild(d);
+  }
+  function border(svg){
+    svg.appendChild(el('rect',{x:4,y:4,width:432,height:272,fill:'none',stroke:'#B9CEDF','stroke-width':1,'stroke-dasharray':'3,3'}));
+  }
+
+  function drawReference(svg){
+    svg.appendChild(el('rect',{x:120,y:40,width:200,height:210,rx:6,fill:'#fff',stroke:'#18324A','stroke-width':2}));
+    svg.appendChild(el('ellipse',{cx:220,cy:120,rx:78,ry:66,fill:'#D7E7F6',stroke:'#18324A','stroke-width':2,'stroke-dasharray':'5,3'}));
+    svg.appendChild(el('path',{d:'M180,110 q40,-34 80,0 q-10,30 -40,30 q-30,0 -40,-30 Z', fill:'#fff', stroke:'#18324A','stroke-width':1.3}));
+    dimLine(svg, 330,40,330,250,'210 mm', [346,146]);
+    dimLine(svg, 120,262,320,262,'200 mm', [220,276]);
+    return [
+      ['A','Printed cardstock backing card'],
+      ['B','Molded plastic blister, single use'],
+      ['C','Adhesive seal between blister and card, prone to separating']
+    ];
+  }
+  function drawWindowBox(svg){
+    svg.appendChild(el('rect',{x:110,y:34,width:200,height:196,rx:8,fill:'#fff',stroke:'#18324A','stroke-width':2}));
+    svg.appendChild(el('rect',{x:140,y:58,width:140,height:120,rx:4,fill:'#D7E7F6',stroke:'#18324A','stroke-width':1.3,'stroke-dasharray':'4,3'}));
+    svg.appendChild(el('rect',{x:120,y:212,width:180,height:38,rx:4,fill:'#fff',stroke:'#18324A','stroke-width':2}));
+    svg.appendChild(el('line',{x1:120,y1:212,x2:300,y2:212,stroke:'#18324A','stroke-width':1,'stroke-dasharray':'2,2'}));
+    svg.appendChild(el('path',{d:'M296,218 l10,6 l-10,6', fill:'none', stroke:'#18324A','stroke-width':1.3}));
+    dimLine(svg, 320,34,320,230,'196 mm', [336,132]);
+    var tc = el('text',{x:220,y:290,'font-family':'IBM Plex Mono','font-size':'9',fill:'#18324A','text-anchor':'middle'});
+    svg.appendChild(tc);
+    return [
+      ['A','Fully recyclable cardboard shell, no plastic bubble'],
+      ['B','Clear film window over the car, held by the cardboard frame'],
+      ['C','Tray slides out at the bottom, no glue seal to break on first open']
+    ];
+  }
+  function drawReinforced(svg){
+    svg.appendChild(el('rect',{x:120,y:40,width:200,height:200,rx:6,fill:'#fff',stroke:'#18324A','stroke-width':2.4}));
+    svg.appendChild(el('rect',{x:120,y:40,width:200,height:16,fill:'url(#hatch)',stroke:'#18324A','stroke-width':1}));
+    svg.appendChild(el('rect',{x:120,y:40,width:16,height:200,fill:'url(#hatch)',stroke:'#18324A','stroke-width':1}));
+    svg.appendChild(el('rect',{x:120,y:216,width:200,height:24,fill:'url(#hatch)',stroke:'#18324A','stroke-width':1.6}));
+    svg.appendChild(el('path',{d:'M320,140 L380,100 L380,210 L320,210 Z', fill:'#EEF4FA', stroke:'#18324A','stroke-width':1.6,'stroke-dasharray':'5,3'}));
+    svg.appendChild(el('line',{x1:320,y1:140,x2:320,y2:210,stroke:'#18324A','stroke-width':1}));
+    dimLine(svg, 100,40,100,240,'board', [86,140]);
+    return [
+      ['A','Heavier, rigid cardstock across the whole backing card'],
+      ['B','Reinforced seal zone along the bottom edge, shown cross hatched'],
+      ['C','Foldable easel back, folds flat for shipping and opens to display']
+    ];
+  }
+
+  var CONCEPTS = [
+    { key:'current', label:'Current pack', draw:drawReference, caption:'Current blister pack, shown for reference' },
+    { key:'window', label:'Window box concept', draw:drawWindowBox, caption:'Eco friendly, reusable window box with a slide out tray' },
+    { key:'reinforced', label:'Reinforced display concept', draw:drawReinforced, caption:'Collector focused, reinforced card with a foldable display stand' }
+  ];
+  var current = 'current';
+  var togglesEl = document.getElementById('cad-toggles');
+  var svgEl = document.getElementById('cad-svg');
+  var captionEl = document.getElementById('cad-caption');
+  var labelsEl = document.getElementById('cad-labels');
+
+  function renderToggles(){
+    togglesEl.innerHTML = '';
+    CONCEPTS.forEach(function(c){
+      var b = document.createElement('button'); b.className='toggle'+(c.key===current?' active':'');
+      b.textContent = c.label;
+      b.addEventListener('click', function(){ current = c.key; render(); });
+      togglesEl.appendChild(b);
+    });
+  }
+  function render(){
+    renderToggles();
+    var c = CONCEPTS.filter(function(x){ return x.key===current; })[0];
+    while(svgEl.firstChild){ svgEl.removeChild(svgEl.firstChild); }
+    defs(svgEl);
+    border(svgEl);
+    var labels = c.draw(svgEl);
+    captionEl.textContent = c.caption;
+    labelsEl.innerHTML = '';
+    labels.forEach(function(l){
+      var row = document.createElement('div'); row.className='cl';
+      var b = document.createElement('b'); b.textContent = l[0];
+      var span = document.createElement('span'); span.textContent = l[1];
+      row.appendChild(b); row.appendChild(span);
+      labelsEl.appendChild(row);
+    });
+  }
+  render();
+})();
+
+/* ============================================================
+   3. MARKETING ANALYTICS — decision dashboard
+   ============================================================ */
+(function(){
+  var DATA = {
+    social: [ ['UNO', 86], ['Hot Wheels', 72], ['Barbie', 94], ['Uno Stacko', 41] ],
+    search: [ ['UNO', 58], ['Hot Wheels', 90], ['Barbie', 77], ['Uno Stacko', 23] ]
+  };
+  var METRIC_LABEL = { social:'Social engagement index', search:'Search interest index' };
+  var current = 'social';
+  var togglesEl = document.getElementById('an-toggles');
+  var barsEl = document.getElementById('an-bars');
+  var insightEl = document.getElementById('an-insight');
+
+  function colorFor(i){ return ['var(--accent)','var(--green)','var(--blue)','var(--yellow)'][i % 4]; }
+
+  function renderToggles(){
+    togglesEl.innerHTML = '';
+    Object.keys(METRIC_LABEL).forEach(function(k){
+      var b = document.createElement('button'); b.className = 'toggle' + (k===current?' active':'');
+      b.textContent = METRIC_LABEL[k];
+      b.addEventListener('click', function(){ current = k; render(); });
+      togglesEl.appendChild(b);
+    });
+  }
+  function render(){
+    renderToggles();
+    var rows = DATA[current];
+    var max = Math.max.apply(null, rows.map(function(r){ return r[1]; }));
+    barsEl.innerHTML = '';
+    rows.forEach(function(r, i){
+      var row = document.createElement('div'); row.className='barrow';
+      var name = document.createElement('div'); name.textContent = r[0];
+      var bg = document.createElement('div'); bg.className='barbg';
+      var fill = document.createElement('div'); fill.className='barfill';
+      fill.style.width = ((r[1]/max)*100).toFixed(0) + '%';
+      fill.style.background = colorFor(i);
+      bg.appendChild(fill);
+      var val = document.createElement('div'); val.className='barval'; val.textContent = r[1];
+      row.appendChild(name); row.appendChild(bg); row.appendChild(val);
+      barsEl.appendChild(row);
+    });
+    var top = rows.reduce(function(a,b){ return b[1]>a[1] ? b : a; });
+    insightEl.textContent = 'By ' + METRIC_LABEL[current].toLowerCase() + ', ' + top[0] + ' is leading this quarter. I would put the next content push behind ' + top[0] + ' and re check this chart again after it runs.';
+  }
+  render();
+})();
+
+/* ============================================================
+   4. SOCIAL AND CONTENT STRATEGY — launch calendar
+   ============================================================ */
+(function(){
+  var CHANNELS = { tiktok:'#C8102E', instagram:'#0062AD', retail:'#157A3C', influencer:'#E0A800' };
+  var PLAN = [
+    { week:'Week 1, teaser', posts:[
+      {ch:'tiktok', t:'Countdown teaser, new edition reveal'},
+      {ch:'instagram', t:'Behind the scenes design story'},
+    ]},
+    { week:'Week 2, reveal', posts:[
+      {ch:'tiktok', t:'Full reveal video with rule preview'},
+      {ch:'influencer', t:'Unboxing kits sent to five family channels'},
+      {ch:'instagram', t:'Carousel: what is new in this edition'},
+    ]},
+    { week:'Week 3, build demand', posts:[
+      {ch:'influencer', t:'Influencer gameplay clips go live'},
+      {ch:'retail', t:'Preorder page and in store display assets ship'},
+    ]},
+    { week:'Week 4, launch week', posts:[
+      {ch:'tiktok', t:'Launch day challenge, duet with us'},
+      {ch:'retail', t:'In store demo kits active at target retailers'},
+      {ch:'instagram', t:'Launch day recap and customer reactions'},
+    ]},
+  ];
+  var active = 'all';
+  var togglesEl = document.getElementById('cal-toggles');
+  var weeksEl = document.getElementById('cal-weeks');
+
+  function renderToggles(){
+    togglesEl.innerHTML = '';
+    ['all'].concat(Object.keys(CHANNELS)).forEach(function(k){
+      var b = document.createElement('button'); b.className='toggle'+(k===active?' active':'');
+      b.textContent = k==='all' ? 'All channels' : k.charAt(0).toUpperCase()+k.slice(1);
+      b.addEventListener('click', function(){ active = k; render(); });
+      togglesEl.appendChild(b);
+    });
+  }
+  function render(){
+    renderToggles();
+    weeksEl.innerHTML = '';
+    PLAN.forEach(function(w){
+      var row = document.createElement('div'); row.className='weekrow';
+      var h = document.createElement('div'); h.className='wk'; h.textContent = w.week;
+      row.appendChild(h);
+      var posts = document.createElement('div'); posts.className='posts';
+      w.posts.forEach(function(p){
+        var el = document.createElement('div'); el.className='post';
+        var dot = document.createElement('span'); dot.className='dot'; dot.style.background = CHANNELS[p.ch];
+        var txt = document.createElement('span'); txt.textContent = p.t;
+        el.appendChild(dot); el.appendChild(txt);
+        el.style.opacity = (active==='all' || active===p.ch) ? '1' : '.3';
+        posts.appendChild(el);
+      });
+      row.appendChild(posts);
+      weeksEl.appendChild(row);
+    });
+  }
+  render();
+})();
+
+/* ============================================================
+   5. TEAM LEADERSHIP AND OPERATIONS — launch timeline
+   ============================================================ */
+(function(){
+  var LANES = [
+    { name:'Product', color:'#C8102E', blocks:[ {label:'Kickoff and brief', start:1, end:1, detail:'Align product, design, marketing, and retail on scope, target audience, and launch date in one working session.'} ]},
+    { name:'Design and Engineering', color:'#157A3C', blocks:[
+      {label:'Prototype', start:1, end:2, detail:'Build and test the physical prototype, including packaging dimensions and card stock.'},
+      {label:'Packaging finalize', start:3, end:3, detail:'Lock the final box dimensions and materials, informed by the kind of efficiency pass shown above.'},
+      {label:'QA and safety testing', start:4, end:4, detail:'Run safety, durability, and quality checks required before mass production.'}
+    ]},
+    { name:'Marketing', color:'#0062AD', blocks:[
+      {label:'Positioning', start:1, end:2, detail:'Set the core message, target audience, and key differentiator before any asset is produced.'},
+      {label:'Content production', start:3, end:4, detail:'Produce video, photography, and social assets against the content calendar above.'},
+      {label:'Press and influencer', start:5, end:5, detail:'Seed the product with press and influencer partners ahead of public launch.'}
+    ]},
+    { name:'Retail and Sales', color:'#E0A800', blocks:[
+      {label:'Retail sell in', start:3, end:4, detail:'Pitch the product and launch plan to retail buyers, securing shelf space and preorder commitments.'},
+      {label:'Launch week', start:6, end:6, detail:'Coordinate in store displays, launch promotions, and day one sell through tracking.'}
+    ]}
+  ];
+  var wrap = document.getElementById('tl-wrap');
+  var detail = document.getElementById('tl-detail');
+
+  var weeksHead = document.createElement('div'); weeksHead.className='tl-weeks';
+  var spacer = document.createElement('div');
+  var wkh = document.createElement('div'); wkh.className='wk-h';
+  for(var i=1;i<=6;i++){ var s=document.createElement('span'); s.textContent='Wk '+i; wkh.appendChild(s); }
+  weeksHead.appendChild(spacer); weeksHead.appendChild(wkh);
+  wrap.appendChild(weeksHead);
+
+  var timeline = document.createElement('div'); timeline.className='timeline';
+  LANES.forEach(function(lane){
+    var row = document.createElement('div'); row.className='tl-row';
+    var label = document.createElement('div'); label.className='tl-label'; label.textContent = lane.name;
+    var track = document.createElement('div'); track.className='tl-track';
+    lane.blocks.forEach(function(b){
+      var el = document.createElement('div'); el.className='tl-block';
+      el.style.gridColumn = b.start + ' / ' + (b.end+1);
+      el.style.background = lane.color;
+      el.textContent = b.label;
+      el.addEventListener('click', function(bl, ln){ return function(){
+        detail.innerHTML = '<b>' + bl.label + '</b> (' + ln.name + ', week ' + bl.start + (bl.end!==bl.start ? ' to ' + bl.end : '') + ')<br>' + bl.detail;
+      }; }(b, lane));
+      track.appendChild(el);
+    });
+    row.appendChild(label); row.appendChild(track);
+    timeline.appendChild(row);
+  });
+  wrap.appendChild(timeline);
+})();
+
+/* ============================================================
+   6. GTM AND POSITIONING — one page canvas
+   ============================================================ */
+(function(){
+  var PRODUCTS = {
+    uno: {
+      label: 'UNO, new edition',
+      fields: [
+        ['Target audience', 'Families and casual groups aged 8 and up, often playing together across generations.'],
+        ['Problem', 'The classic game still gets played constantly, but the box and rules feel dated next to newer party games.'],
+        ['Differentiation', 'Same fast, forgiving rules everyone already knows, refreshed packaging and cards that feel current without changing how it plays.'],
+        ['Key message', 'The game you already know how to play, made to feel new again.'],
+        ['Primary channels', 'Retail end caps, TikTok and Instagram short video, family focused influencers.'],
+        ['Success metric', 'Sell through rate in the first six weeks versus the previous edition.']
+      ]
+    },
+    newgame: {
+      label: 'A new strategy game pitch',
+      fields: [
+        ['Target audience', 'Adults 18 to 35 who already play tabletop games regularly and want something with more depth than a party game.'],
+        ['Problem', 'This audience has largely moved to independent publishers for depth, and does not associate Mattel with that kind of play.'],
+        ['Differentiation', 'Mattel distribution and production quality behind a genuinely strategic game, not a licensed reskin.'],
+        ['Key message', 'Real strategy, backed by a brand you can actually find at retail.'],
+        ['Primary channels', 'Tabletop community platforms, specialty game stores, convention demos.'],
+        ['Success metric', 'Repeat play rate and community engagement in the first ninety days.']
+      ]
+    }
+  };
+  var current = 'uno';
+  var togglesEl = document.getElementById('gtm-toggles');
+  var gridEl = document.getElementById('gtm-grid');
+
+  function renderToggles(){
+    togglesEl.innerHTML = '';
+    Object.keys(PRODUCTS).forEach(function(k){
+      var b = document.createElement('button'); b.className='toggle'+(k===current?' active':'');
+      b.textContent = PRODUCTS[k].label;
+      b.addEventListener('click', function(){ current = k; render(); });
+      togglesEl.appendChild(b);
+    });
+  }
+  function render(){
+    renderToggles();
+    gridEl.innerHTML = '';
+    PRODUCTS[current].fields.forEach(function(f){
+      var cell = document.createElement('div'); cell.className='gtmcell';
+      var l = document.createElement('div'); l.className='gl'; l.textContent = f[0];
+      var p = document.createElement('p'); p.textContent = f[1];
+      cell.appendChild(l); cell.appendChild(p);
+      gridEl.appendChild(cell);
+    });
+  }
+  render();
+})();
+</script>
